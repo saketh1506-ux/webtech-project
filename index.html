@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MERN Resume Builder — Landing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+
+    <!-- LANDING / SPLASH -->
+    <div class="centerWrap" role="main">
+      <div class="hero" role="region" aria-label="Welcome to MERN Resume Builder">
+        <div class="content">
+          <div class="logo">⚡ MERN Resume<span> Builder</span></div>
+          <h1 class="title">Make a recruiter-ready MERN resume — fast.</h1>
+          <p class="sub">Live preview, rule-based scoring, curated course suggestions, and downloadable multi-page PDF export. Click <strong>Get started</strong> to open the builder in a new tab.</p>
+
+          <div class="controls" style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <a href="getstarted.html" class="btn-primary" title="Open get started">Get started →</a>
+            <button id="skipBtn" class="btn-outline" title="Open builder now">Skip (open builder)</button>
+            <button id="tourBtn" class="btn" title="Quick tour">Quick tour</button>
+            <button id="orderDemoBtn" class="order-btn" title="Order demo">Try Order Button</button>
+          </div>
+
+          <div class="features" aria-hidden="true">
+            <div class="feature">Live preview</div>
+            <div class="feature">Course suggestions</div>
+            <div class="feature">Rule-based score</div>
+            <div class="feature">Download PDF</div>
+          </div>
+
+          <div class="bottom">
+            <div>Tip: Open the builder in a new tab so you can keep this landing page open.</div>
+            <label class="dont"><input id="dontShowAgain" type="checkbox"> Don't show again</label>
+          </div>
+        </div>
+
+        <div class="scene" aria-hidden="true">
+          <div class="floating-cards">
+            <div class="card c1">
+              <div class="card-title">Live Preview</div>
+              <div class="card-body">Edit and see updates instantly.</div>
+            </div>
+            <div class="card c2">
+              <div class="card-title">Course Suggestions</div>
+              <div class="card-body">Curated learning paths for MERN.</div>
+            </div>
+            <div class="card c3">
+              <div class="card-title">PDF Export</div>
+              <div class="card-body">Download a multi-page resume PDF.</div>
+            </div>
+          </div>
+          <div class="mock-screen" aria-hidden="true">
+            <div class="mock-top"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            <div class="mock-content">
+              <div class="line short"></div>
+              <div class="line long"></div>
+              <div class="grid-lines"><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/main.js" defer></script>
+  </body>
+</html>

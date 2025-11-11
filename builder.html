@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>MERN Resume Builder — Builder</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/builder.css">
+  <!-- libs for PDF -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <div class="top" style="max-width:1200px;margin:0 auto 18px">
+    <div>
+      <div style="font-weight:800;font-size:20px">MERN Resume Builder</div>
+      <div class="muted">Edit, preview, get suggestions and download PDF — all local.</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button id="scoreBtn" class="btn-score">Get Score</button>
+      <button id="saveBtn" class="btn-save">Save</button>
+      <button id="downloadBtn" class="btn-dl">Download PDF</button>
+      <button id="myPlanBtn" class="btn-save" title="View your learning plan">My Plan</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div>
+      <div class="card">
+        <h3>Personal</h3>
+        <label>Accent Color</label><input id="accent" type="color" value="#4f46e5">
+        <label>Full name</label><input id="name" type="text" placeholder="John Doe">
+        <label>Title</label><input id="title" type="text" placeholder="MERN Developer">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div><label>Email</label><input id="email" type="text" placeholder="name@example.com"></div>
+          <div><label>Phone</label><input id="phone" type="text" placeholder="(123) 456-7890"></div>
+        </div>
+        <label>LinkedIn</label><input id="linkedin" type="text" placeholder="linkedin.com/in/you">
+        <label>Summary</label><textarea id="summary" rows="4" placeholder="Short summary..."></textarea>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3>Experience</h3>
+        <div id="exp-container"></div>
+        <div style="margin-top:8px"><button id="add-exp" class="btn-save">+ Add Experience</button></div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3>Education</h3>
+        <div id="edu-container"></div>
+        <div style="margin-top:8px"><button id="add-edu" class="btn-save">+ Add Education</button></div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3>Skills</h3>
+        <label>Skills (comma separated)</label>
+        <textarea id="skills" rows="2" placeholder="React, Node.js, Express, MongoDB"></textarea>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3>Course Suggestions</h3>
+  <div id="suggestions" class="muted">Click "Suggestion" to see curated courses based on your skills.</div>
+        <div style="margin-top:8px; position:relative; display:inline-block">
+          <button id="openSuggestions" class="btn-save" title="Click to open menu — Shift+click to open full view with animation">Suggestion ▾</button>
+          <div id="suggestionMenu" style="display:none;position:absolute;right:0;top:100%;z-index:20;background:#fff;border:1px solid #eef2ff;padding:8px;border-radius:8px;box-shadow:0 6px 18px rgba(15,23,42,0.08);min-width:320px;max-width:380px">
+            <div style="display:flex;gap:8px;margin-bottom:8px">
+              <button id="tabCourses" style="flex:1;padding:8px;border-radius:6px;border:1px solid transparent;background:#eef2ff;font-weight:700;cursor:pointer">Courses</button>
+              <button id="tabCerts" style="flex:1;padding:8px;border-radius:6px;border:1px solid transparent;background:transparent;font-weight:700;cursor:pointer">Certifications</button>
+            </div>
+            <div id="menuContentCourses" style="max-height:320px;overflow:auto;padding-right:6px">
+              <!-- courses rendered here -->
+            </div>
+            <div id="menuContentCerts" style="display:none;max-height:320px;overflow:auto;padding-right:6px">
+              <!-- certifications rendered here -->
+            </div>
+            <div style="margin-top:8px;text-align:right">
+              <button id="menuOpenFull" class="btn-save" style="padding:6px 8px">Open full</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div>
+      <div class="card">
+        <h3>Preview</h3>
+        <div id="preview" class="preview"></div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3>Last Actions & Tips</h3>
+        <div id="last-actions" class="muted">No actions yet.</div>
+        <div style="margin-top:8px" class="muted">Tips: Use MERN keywords in Skills and quantifiable achievements in Experience (e.g., "reduced latency by 20%").</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/builder-core.js" defer></script>
+  <script src="js/builder-ui.js" defer></script>
+  <script>
+    /* flightPlane removed per user request — plane animation was disabled
+       Suggestions & Certifications open in a new tab immediately. */
+  </script>
+
+  <!-- Inline modal for full suggestions/certifications (replaces popup for better UX) -->
+  <div id="suggestionModal" role="dialog" aria-hidden="true" style="display:none">
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel" role="document">
+      <div class="modal-header">
+        <h2 id="modalTitle">Suggestions</h2>
+        <button id="modalClose" aria-label="Close">✕</button>
+      </div>
+      <div id="modalContent" class="modal-body"></div>
+    </div>
+  </div>
+</body>
+</html>

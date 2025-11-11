@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Get Started — Saketh</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/getstarted.css">
+</head>
+<body>
+  <header class="gs-header">
+    <div class="container">
+  <div class="logo">MERN Resume Builder</div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="builder.html">Builder</a>
+        <a class="cta" href="builder.html">Get started</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="container hero-grid">
+      <section class="hero-left">
+        <div class="eyebrow">INTRODUCING</div>
+        <h1>Resume Builder for Developers</h1>
+        <p class="lead">Quickly craft an ATS-friendly MERN resume, highlight quantified achievements, and get curated course suggestions to grow your skills.</p>
+        <div class="hero-actions">
+          <button id="btnDocs" class="btn ghost">Documentation</button>
+          <button id="btnGetStarted" class="btn primary">Get started</button>
+        </div>
+      </section>
+
+      <section class="hero-right">
+        <!-- interactive panel: 3D-tilt card + feature list -->
+        <div id="interactivePanel">
+          <div id="card3d" class="card3d">
+            <div class="card-inner">
+              <div class="card-face">
+                <h3>Build. Improve. Ship.</h3>
+                <p class="card-desc">Create a recruiter-ready MERN resume and get course recommendations tailored to your skills.</p>
+                <div class="card-cta">
+                  <button id="exploreCourses" class="btn primary">Explore Courses</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="featureList" class="feature-list">
+            <div class="fitem"><strong>Live Preview</strong><span>See edits instantly</span></div>
+            <div class="fitem"><strong>Score Report</strong><span>Actionable suggestions</span></div>
+            <div class="fitem"><strong>Curated Courses</strong><span>Paths to level up</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/getstarted.js" defer></script>
+</body>
+</html>

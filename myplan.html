@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>My Learning Plan</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:Inter,Arial;background:#f8fafc;color:#0f172a;padding:20px}
+    .wrap{max-width:900px;margin:0 auto}
+    .card{background:#fff;border-radius:8px;padding:12px;border:1px solid #eef2ff;margin-bottom:12px}
+    .item{display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .meta{color:#64748b;font-size:13px}
+    .actions{display:flex;gap:8px}
+    button{padding:8px 10px;border-radius:8px;border:0;cursor:pointer}
+    .btn-danger{background:#ef4444;color:#fff}
+    .btn-ghost{background:transparent;border:1px solid #e6e9ee}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>My Learning Plan</h1>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="muted">Saved courses you added from suggestions.</div>
+        <div class="actions">
+          <button id="exportPlan" class="btn-ghost">Export JSON</button>
+          <button id="clearPlan" class="btn-danger">Clear all</button>
+        </div>
+      </div>
+    </div>
+    <div id="list"></div>
+    <div id="empty" style="color:#64748b">No courses in your plan yet. Add some from the score popup or suggestions.</div>
+  </div>
+
+  <script>
+    const KEY = 'learning_plan_v1';
+    function load(){ try{ const raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : []; }catch(e){console.error(e); return []; } }
+    function save(list){ try{ localStorage.setItem(KEY, JSON.stringify(list)); return true;}catch(e){return false;} }
+    function render(){ const list = load(); const container = document.getElementById('list'); const empty = document.getElementById('empty'); container.innerHTML=''; if(!list || list.length===0){ empty.style.display='block'; return; } empty.style.display='none'; list.forEach((it, idx)=>{ const el = document.createElement('div'); el.className='card'; el.innerHTML = `<div class="item"><div style="flex:1"><div style="font-weight:700"><a href="${it.link}" target="_blank" rel="noopener noreferrer">${it.title}</a></div><div class="meta">${it.note || ''} ${it.level? ' • ' + it.level : ''}</div></div><div style="text-align:right"><div style="margin-bottom:8px"><button class="open-link">Open</button></div><div><button class="remove" data-idx="${idx}" style="background:#ef4444;color:#fff;padding:6px 8px;border-radius:8px;border:0">Remove</button></div></div></div>`; container.appendChild(el); });
+      // wire
+      container.querySelectorAll('.remove').forEach(b=>{ b.addEventListener('click', function(){ const idx = Number(this.getAttribute('data-idx')); const list = load(); list.splice(idx,1); save(list); render(); }); });
+      container.querySelectorAll('.open-link').forEach((b,i)=>{ b.addEventListener('click', function(){ const list = load(); const it = list[i]; if(!it) return; window.open(it.link,'_blank'); }); });
+    }
+    document.getElementById('exportPlan').addEventListener('click', function(){ const list = load(); const blob = new Blob([JSON.stringify(list, null, 2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'learning_plan.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); });
+    document.getElementById('clearPlan').addEventListener('click', function(){ if(!confirm('Clear all saved courses from your learning plan?')) return; localStorage.removeItem(KEY); render(); });
+    render();
+  </script>
+</body>
+</html>

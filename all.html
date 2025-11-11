@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Legacy — MERN Resume Builder (moved)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <meta http-equiv="refresh" content="0; url=index.html">
+    <style>body{font-family:Inter,Arial,sans-serif;padding:24px;background:#0b1220;color:#fff}</style>
+  </head>
+  <body>
+    <h1>Project reorganized</h1>
+    <p>This file was the single-file demo. The project has been split into <code>index.html</code>, <code>builder.html</code>, and separate CSS/JS files for easier editing.</p>
+    <p>If your browser doesn't redirect automatically, open <a href="index.html">index.html</a>.</p>
+  </body>
+</html>
+  </template>
+
+<script>
+  // Landing-to-builder wiring (single-file approach)
+  (function(){
+    const HIDE_KEY = 'mern_hide_splash_singlefile_v1';
+    const getStartedBtn = document.getElementById('getStarted');
+    const skipBtn = document.getElementById('skipBtn');
+    const tourBtn = document.getElementById('tourBtn');
+    const dont = document.getElementById('dontShowAgain');
+    const builderTemplate = document.getElementById('builder-template');
+
+    function openBuilder(savePref) {
+      if (savePref) localStorage.setItem(HIDE_KEY, '1');
+      const html = builderTemplate.innerHTML;
+      const w = window.open();
+      if (!w) { alert('Popup blocked — allow popups or open the builder manually'); return; }
+      w.document.open();
+      w.document.write(html);
+      w.document.close();
+      w.focus();
+    }
+
+    // auto-open if user chose don't show again earlier
+    if (localStorage.getItem(HIDE_KEY) === '1') {
+      openBuilder(false);
+    }
+
+    getStartedBtn.addEventListener('click', () => openBuilder(dont.checked));
+    skipBtn.addEventListener('click', () => openBuilder(dont.checked));
+    tourBtn.addEventListener('click', () => {
+      alert('Quick tour:\\n• Get started opens the builder in a new tab.\\n• Save stores your resume locally.\\n• Suggestion opens curated MERN courses.\\n• Get Score opens a report.\\n• Download exports a multi-page PDF.');
+    });
+  })();
+</script>
+
+</body>
+</html> differ this wrt there lanagage give me there links directly

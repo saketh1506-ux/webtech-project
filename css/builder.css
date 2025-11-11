@@ -1,0 +1,32 @@
+:root{--accent:#4f46e5}
+body{font-family:Inter,system-ui,Arial;background:#f8fafc;color:#0f172a;margin:0;padding:20px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:1200px;margin:0 auto 18px}
+.card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 8px 30px rgba(2,6,23,0.06)}
+.wrap{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 440px;gap:18px}
+label{display:block;margin-top:8px;color:#334155;font-size:13px}
+input[type=text], textarea, input[type=color]{width:100%;padding:10px;border:1px solid #e6e9ee;border-radius:8px}
+button{padding:10px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+.btn-save{background:var(--accent);color:#fff}
+.btn-score{background:#db2777;color:#fff}
+.btn-dl{background:#10b981;color:#fff}
+.muted{color:#64748b;font-size:13px}
+.course{border:1px solid #eef2ff;padding:10px;border-radius:8px;margin-top:8px;background:#fff}
+.metric{border:1px solid #eef2ff;padding:12px;border-radius:10px;margin-top:10px;background:#fff}
+.preview{background:#fff;padding:12px;border-radius:8px;min-height:120px}
+@media (max-width:980px){ .wrap{grid-template-columns:1fr} }
+
+/* airplane was removed — no flight animation styles needed */
+
+/* Modal styles */
+#suggestionModal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1300}
+#suggestionModal[aria-hidden="true"]{display:none}
+.modal-backdrop{position:absolute;inset:0;background:rgba(2,6,23,0.45)}
+.modal-panel{position:relative;background:#fff;border-radius:12px;max-width:920px;width:min(94%,920px);max-height:80vh;overflow:auto;padding:18px;box-shadow:0 40px 120px rgba(2,6,23,0.5);color:#0f172a}
+.modal-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.modal-header h2{margin:0;font-size:18px}
+.modal-header button{background:transparent;border:0;font-size:18px;cursor:pointer}
+.modal-body{margin-top:12px}
+.modal-body .item{border:1px solid #eef2ff;padding:12px;border-radius:8px;margin-bottom:8px;background:#fff}
+.modal-body .item a{color:var(--accent);font-weight:700}
+
+
