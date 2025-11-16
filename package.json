@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "server": "node server/index.js",
+    "dev:all": "concurrently -c blue,magenta \"node server/index.js\" \"vite\"",
     "check:db": "node scripts/check-db.js",
     "seed:links": "node scripts/seed-links.js"
   },
@@ -23,6 +24,7 @@
     "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "vite": "^7.2.2"
   }
 }

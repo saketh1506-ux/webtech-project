@@ -15,6 +15,8 @@ import LinkModelFactory from './models/Link.js';
 const app = express();
 app.use(cors());
 app.use(express.json());
+// Simple request logger to visualize API traffic in the console
+app.use((req, _res, next) => { console.log(`[server] ${req.method} ${req.originalUrl}`); next(); });
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/mern_resume_builder';
 mongoose.connect(MONGODB_URI).then(()=> console.log('[server] MongoDB connected')).catch(err=> console.error('[server] MongoDB connection error', err));

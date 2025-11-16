@@ -24,6 +24,17 @@ export default function GetStarted(){
     return ()=>{ wrap.removeEventListener('mousemove', onMove); wrap.removeEventListener('mouseleave', onLeave); };
   },[]);
 
+  async function handleExploreCourses(){
+    try{
+      // Fire API calls so they show in backend logs immediately
+      await Promise.allSettled([
+        fetch('/api/links?kind=course'),
+        fetch('/api/links?kind=certification')
+      ]);
+    }catch(_e){ /* ignore */ }
+    navigate('/courses');
+  }
+
   return (
     <div className="gs-page" style={{fontFamily:'Inter,Arial'}}>
       <header className="gs-header">
@@ -57,7 +68,7 @@ export default function GetStarted(){
                     <h3>Build. Improve. Ship.</h3>
                     <p className="card-desc">Create a recruiter-ready MERN resume and get course recommendations tailored to your skills.</p>
                     <div className="card-cta">
-                      <button onClick={()=>navigate('/courses')} className="btn primary">Explore Courses</button>
+                      <button onClick={handleExploreCourses} className="btn primary">Explore Courses</button>
                     </div>
                   </div>
                 </div>
