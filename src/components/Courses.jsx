@@ -1,13 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CURATED, CERTIFICATIONS } from '../lib/builderCore.js';
 
 export default function Courses(){
-  const sections = [
+  const [sections, setSections] = useState([
     { key: 'Foundational', items: CURATED.Foundational },
     { key: 'Intermediate', items: CURATED.Intermediate },
     { key: 'Advanced', items: CURATED.Advanced },
-  ];
+  ]);
+  const [certs, setCerts] = useState(CERTIFICATIONS);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load(){
+      try {
+        const [coursesRes, certsRes] = await Promise.all([
+          fetch('/api/links?kind=course'),
+          fetch('/api/links?kind=certification')
+        ]);
+        if (!coursesRes.ok || !certsRes.ok) return; // fallback silently
+        const [courses, certItems] = await Promise.all([coursesRes.json(), certsRes.json()]);
+        if (cancelled) return;
+        const byLevel = { Foundational: [], Intermediate: [], Advanced: [] };
+        for (const c of courses) {
+          if (c.level && byLevel[c.level]) byLevel[c.level].push(c);
+        }
+        setSections([
+          { key: 'Foundational', items: byLevel.Foundational.length ? byLevel.Foundational : CURATED.Foundational },
+          { key: 'Intermediate', items: byLevel.Intermediate.length ? byLevel.Intermediate : CURATED.Intermediate },
+          { key: 'Advanced', items: byLevel.Advanced.length ? byLevel.Advanced : CURATED.Advanced },
+        ]);
+        setCerts(Array.isArray(certItems) && certItems.length ? certItems : CERTIFICATIONS);
+      } catch (e) {
+        // Network error - keep defaults
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   return (
     <div className="courses-page" style={{fontFamily:'Inter,Arial'}}>
@@ -48,7 +78,7 @@ export default function Courses(){
         <section style={{marginTop:32}}>
           <h2 style={{margin:'0 0 12px'}}>Recommended Certifications</h2>
           <div className="grid" style={{display:'grid', gap:'12px', gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))'}}>
-            {CERTIFICATIONS.map((c, idx) => (
+            {certs.map((c, idx) => (
               <a key={idx} href={c.link} target="_blank" rel="noreferrer" className="card" style={{
                 display:'block', padding:'14px 16px', border:'1px solid #e5e7eb', borderRadius:10, background:'#fff', textDecoration:'none'
               }}>

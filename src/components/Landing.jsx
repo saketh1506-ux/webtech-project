@@ -4,6 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 export default function Landing() {
   const navigate = useNavigate();
   const openBuilder = () => navigate('/builder');
+  const startQuickTour = () => {
+    alert('Quick Tour\n\nThis short tour will:\n• Show you the Builder\'s live preview\n• Explain how scoring works\n• Point to curated courses\n• Show how to export a clean PDF\n\nYou can exit anytime.');
+    navigate('/getstarted');
+  };
   return (
     <main className="landing" style={{fontFamily:'Inter,Arial'}}>
       <section className="hero-shell">
@@ -21,7 +25,7 @@ export default function Landing() {
           <div className="cta-row">
             <Link to="/getstarted" className="btn btn-primary">Get started →</Link>
             <button onClick={openBuilder} className="btn btn-dark">Open builder</button>
-            <Link to="/getstarted" className="btn btn-ghost">Quick tour</Link>
+            <button onClick={startQuickTour} className="btn btn-ghost">Quick tour</button>
           </div>
 
           <div className="pill-row">

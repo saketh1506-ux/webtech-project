@@ -5,10 +5,38 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 
 const defaultData = {
-  personal: { name:'Alex Morgan', title:'Senior MERN Engineer', email:'alex.morgan@example.com', phone:'+1 (555) 123-4567', linkedin:'linkedin.com/in/alexmorgan', summary:'Senior MERN engineer with 7+ years building high-performance web applications.' },
-  experience: [ { id:1, title:'Senior MERN Engineer', company:'Acme Tech', years:'2021 - Present', description:'Led MERN platform development; reduced load time by 45% and increased API throughput 3x.' } ],
-  education: [ { id:1, degree:'B.Tech in Computer Science', institution:'State University', years:'2012 - 2016' } ],
-  skills: 'React, Node.js, Express, MongoDB, REST API, Redux, TypeScript',
+  personal: {
+    name: 'Alex Morgan',
+    title: 'Senior MERN Engineer',
+    email: 'alex.morgan@example.com',
+    phone: '+1 (555) 123-4567',
+    linkedin: 'linkedin.com/in/alexmorgan',
+    summary:
+      'Senior MERN engineer with 7+ years delivering scalable, user-centric web apps. Designed and implemented React/Next.js frontends and Node.js/Express APIs backed by MongoDB. Led teams, optimized performance, and improved reliability through testing and clean architecture. Proven impact with measurable results, strong communication, and a continuous learning mindset aligned to business goals.'
+  },
+  experience: [
+    {
+      id: 1,
+      title: 'Senior MERN Engineer',
+      company: 'Acme Tech',
+      years: '2021 - Present',
+      description:
+        'Led and engineered a MERN platform serving 1M+ users; optimized React rendering and Node.js APIs, reducing TTFB by 45% and increasing throughput 3x. Implemented CI testing, designed REST API contracts, and created reusable components; managed cross-functional delivery and mentored 5 engineers.'
+    },
+    {
+      id: 2,
+      title: 'Full-Stack Developer',
+      company: 'Bright Labs',
+      years: '2018 - 2021',
+      description:
+        'Designed and developed React/Redux features and Express services; implemented Mongoose data models and optimized MongoDB indexes, reducing query time by 60%. Created TypeScript tooling, implemented authentication, and increased conversion by 18% through A/B-tested UI improvements.'
+    }
+  ],
+  education: [
+    { id: 1, degree: 'B.Tech in Computer Science', institution: 'State University', years: '2012 - 2016' }
+  ],
+  skills:
+    'React, Next.js, Redux, TypeScript, JavaScript, Node.js, Express, REST API, MongoDB, Mongoose, Tailwind, MERN',
   accent: '#4f46e5',
   textColor: '#334155'
 };
@@ -47,18 +75,46 @@ export default function Builder(){
   async function downloadPdf(){
     const el = document.getElementById('resumePreview');
     if(!el) return;
-    const canvas = await html2canvas(el, { scale:2 });
-    const imgData = canvas.toDataURL('image/jpeg', 0.95);
-    const pdf = new jsPDF({ unit:'mm', format:'a4', orientation:'portrait' });
+    const canvas = await html2canvas(el, { scale: 2, background: '#ffffff', useCORS: true });
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+
     const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const margin = 10; // mm
+
     const pxToMm = px => px * 0.264583;
+    const mmToPx = mm => mm / 0.264583;
     const imgWmm = pxToMm(canvas.width);
-    const imgHmm = pxToMm(canvas.height);
-    const ratio = Math.min(pageW / imgWmm, 1);
-    const renderW = imgWmm * ratio;
-    const renderH = imgHmm * ratio;
-    pdf.addImage(imgData, 'JPEG', (pageW-renderW)/2, 10, renderW, renderH);
-    pdf.save((data.personal.name||'resume').replace(/\s+/g,'_').toLowerCase()+ '_resume.pdf');
+    const pxPerMm = canvas.width / imgWmm;
+
+    const renderW = Math.min(pageW - margin * 2, imgWmm);
+    const scale = renderW / imgWmm; // scaling applied in PDF
+    const pageContentHmm = pageH - margin * 2; // mm
+
+    // Slice height in source pixels that fits one page after scaling
+    const sliceHeightPx = Math.floor((pageContentHmm / scale) * pxPerMm);
+
+    let y = 0; let pageIndex = 0;
+    while (y < canvas.height) {
+      const sliceH = Math.min(sliceHeightPx, canvas.height - y);
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = canvas.width;
+      tempCanvas.height = sliceH;
+      const ctx = tempCanvas.getContext('2d');
+      ctx.drawImage(canvas, 0, y, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
+      const imgData = tempCanvas.toDataURL('image/jpeg', 0.95);
+
+      if (pageIndex > 0) pdf.addPage();
+      const renderH = pxToMm(sliceH) * scale; // mm after scaling
+      const x = (pageW - renderW) / 2;
+      pdf.addImage(imgData, 'JPEG', x, margin, renderW, renderH, undefined, 'FAST');
+
+      y += sliceH;
+      pageIndex += 1;
+    }
+
+    const filename = (data.personal.name || 'resume').replace(/\s+/g, '_').toLowerCase() + '_resume.pdf';
+    pdf.save(filename);
   }
 
   async function saveToBackend(){
@@ -116,7 +172,7 @@ export default function Builder(){
                 <input placeholder="Company" value={item.company} onChange={e=>setData(d=>({...d,experience:d.experience.map(x=>x.id===item.id? {...x,company:e.target.value}:x)}))} />
                 <input placeholder="Years" value={item.years} onChange={e=>setData(d=>({...d,experience:d.experience.map(x=>x.id===item.id? {...x,years:e.target.value}:x)}))} />
                 <textarea rows={3} placeholder="Description" value={item.description} onChange={e=>setData(d=>({...d,experience:d.experience.map(x=>x.id===item.id? {...x,description:e.target.value}:x)}))} />
-                <div style={{textAlign:'right'}}><button onClick={()=>removeExp(item.id)}>Remove</button></div>
+                <div style={{textAlign:'right'}}><button className="btn-remove" onClick={()=>removeExp(item.id)}>Remove</button></div>
               </div>
             ))}
             <button onClick={addExp} className="btn-save">+ Add Experience</button>
@@ -128,7 +184,7 @@ export default function Builder(){
                 <input placeholder="Degree" value={item.degree} onChange={e=>setData(d=>({...d,education:d.education.map(x=>x.id===item.id? {...x,degree:e.target.value}:x)}))} />
                 <input placeholder="Institution" value={item.institution} onChange={e=>setData(d=>({...d,education:d.education.map(x=>x.id===item.id? {...x,institution:e.target.value}:x)}))} />
                 <input placeholder="Years" value={item.years} onChange={e=>setData(d=>({...d,education:d.education.map(x=>x.id===item.id? {...x,years:e.target.value}:x)}))} />
-                <div style={{textAlign:'right'}}><button onClick={()=>removeEdu(item.id)}>Remove</button></div>
+                <div style={{textAlign:'right'}}><button className="btn-remove" onClick={()=>removeEdu(item.id)}>Remove</button></div>
               </div>
             ))}
             <button onClick={addEdu} className="btn-save">+ Add Education</button>

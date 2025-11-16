@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "server": "node server/index.js",
-    "check:db": "node scripts/check-db.js"
+    "check:db": "node scripts/check-db.js",
+    "seed:links": "node scripts/seed-links.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

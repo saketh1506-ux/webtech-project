@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const ExperienceSchema = new mongoose.Schema({
   title: String,
@@ -29,4 +29,4 @@ const ResumeSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-export default mongoose.model('Resume', ResumeSchema);
+module.exports = mongoose.model('Resume', ResumeSchema);
